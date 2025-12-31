@@ -1,38 +1,74 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+}
+
 .App {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  margin-bottom: 30px;
+  color: #1f2937;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.course-row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+input, select {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 120px;
+}
+
+button {
+  padding: 8px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.remove-btn {
+  background: #f87171;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.buttons {
+  margin-top: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.buttons button:first-child {
+  background: #3b82f6;
+  color: white;
+  margin-right: 10px;
+}
+
+.buttons button:last-child {
+  background: #10b981;
+  color: white;
+}
+
+h2 {
+  margin-top: 30px;
+  color: #1f2937;
 }
