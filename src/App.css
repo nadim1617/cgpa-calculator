@@ -72,3 +72,37 @@ h2 {
   margin-top: 30px;
   color: #1f2937;
 }
+
+.footer {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  color: #777;
+  margin-top: 40px;
+}
+
+body.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark input,
+body.dark select {
+  background-color: #1f2937;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+body.dark button {
+  background-color: #2563eb;
+  color: white;
+}
+
+.dark-toggle {
+  margin: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
+

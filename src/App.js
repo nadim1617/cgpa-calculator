@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import React, { useState } from "react";
 import "./App.css";
 
@@ -16,6 +17,12 @@ const gradeOptions = [
 
 
 function App() {
+
+const [darkMode, setDarkMode] = useState(false);
+useEffect(() => {
+  document.body.className = darkMode ? "dark" : "";
+}, [darkMode]);
+
   const [courses, setCourses] = useState([{ credit: "", grade: "" }]);
   const [cgpa, setCgpa] = useState(null);
 
@@ -55,6 +62,15 @@ function App() {
   return (
     <div className="App">
       <h1>CGPA Calculator</h1>
+
+<button
+  className="dark-toggle"
+  onClick={() => setDarkMode(!darkMode)}
+>
+  {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
+</button>
+
+
       {courses.map((course, index) => (
         <div key={index} className="course-row">
           <input
@@ -87,6 +103,12 @@ function App() {
         <button onClick={calculateCGPA}>📊 Calculate CGPA</button>
       </div>
       {cgpa !== null && <h2>Your CGPA is: {cgpa}</h2>}
+
+<footer className="footer">
+  © {new Date().getFullYear()} Nadim Mahmud. All rights reserved.
+</footer>
+
+
     </div>
   );
 }
