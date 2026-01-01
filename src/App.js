@@ -1,35 +1,31 @@
-import { useState, useEffect } from "react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
-const gradeOptions = [
-  { label: "A+ (80-100) - 4.00", value: 4.00 },
-  { label: "A (75-79) - 3.75", value: 3.75 },
-  { label: "A- (70-74) - 3.50", value: 3.50 },
-  { label: "B+ (65-69) - 3.25", value: 3.25 },
-  { label: "B (60-64) - 3.00", value: 3.00 },
-  { label: "B- (55-59) - 2.75", value: 2.75 },
-  { label: "C+ (50-54) - 2.50", value: 2.50 },
-  { label: "C (45-49) - 2.25", value: 2.25 },
-  { label: "D (40-44) - 2.00", value: 2.00 },
-  { label: "F (0-39) - 0.00", value: 0.00 },
-];
-
-
 function App() {
-
-const [darkMode, setDarkMode] = useState(false);
-useEffect(() => {
-  document.body.className = darkMode ? "dark" : "";
-}, [darkMode]);
-
   const [courses, setCourses] = useState([{ credit: "", grade: "" }]);
+  const [darkMode, setDarkMode] = useState(false);
   const [cgpa, setCgpa] = useState(null);
 
-  const handleChange = (e, index) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    document.body.className = darkMode ? "dark" : "";
+  }, [darkMode]);
+
+  const gradePoints = {
+    "A+": 4.00,
+    "A": 3.75,
+    "A-": 3.50,
+    "B+": 3.25,
+    "B": 3.00,
+    "B-": 2.75,
+    "C+": 2.50,
+    "C": 2.25,
+    "D": 2.00,
+    "F": 0.00,
+  };
+
+  const handleChange = (index, field, value) => {
     const updatedCourses = [...courses];
-    updatedCourses[index][name] = value;
+    updatedCourses[index][field] = value;
     setCourses(updatedCourses);
   };
 
@@ -38,77 +34,88 @@ useEffect(() => {
   };
 
   const removeCourse = (index) => {
-    const updatedCourses = courses.filter((_, i) => i !== index);
-    setCourses(updatedCourses);
+    setCourses(courses.filter((_, i) => i !== index));
   };
 
   const calculateCGPA = () => {
     let totalCredits = 0;
-    let weightedSum = 0;
+    let totalPoints = 0;
 
-    courses.forEach((c) => {
-      const credit = parseFloat(c.credit);
-      const grade = parseFloat(c.grade);
-      if (!isNaN(credit) && !isNaN(grade)) {
+    courses.forEach((course) => {
+      const credit = parseFloat(course.credit);
+      if (credit > 0 && course.grade) {
         totalCredits += credit;
-        weightedSum += credit * grade;
+        totalPoints += credit * gradePoints[course.grade];
       }
     });
 
-    const result = totalCredits ? (weightedSum / totalCredits).toFixed(2) : 0;
-    setCgpa(result);
+    if (totalCredits === 0) return "0.00";
+    return (totalPoints / totalCredits).toFixed(2);
+  };
+
+  const handleCalculateClick = () => {
+    setCgpa(calculateCGPA());
   };
 
   return (
     <div className="App">
       <h1>CGPA Calculator</h1>
 
-<button
-  className="dark-toggle"
-  onClick={() => setDarkMode(!darkMode)}
->
-  {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
-</button>
-
+      <button
+        className="dark-toggle"
+        onClick={() => setDarkMode(!darkMode)}
+      >
+        {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
+      </button>
 
       {courses.map((course, index) => (
         <div key={index} className="course-row">
           <input
             type="number"
+            step="0.1"
+            min="0"
             placeholder="Credit"
-            name="credit"
             value={course.credit}
-            onChange={(e) => handleChange(e, index)}
+            onChange={(e) =>
+              handleChange(index, "credit", e.target.value)
+            }
           />
+
           <select
-  name="grade"
-  value={course.grade}
-  onChange={(e) => handleChange(e, index)}
->
-  <option value="">Select Grade</option>
-  {gradeOptions.map((g, i) => (
-    <option key={i} value={g.value}>
-      {g.label}
-    </option>
-  ))}
-</select>
+            value={course.grade}
+            onChange={(e) =>
+              handleChange(index, "grade", e.target.value)
+            }
+          >
+            <option value="">Select Grade</option>
+            {Object.entries(gradePoints).map(([grade, point]) => (
+              <option key={grade} value={grade}>
+                {grade} ({point.toFixed(2)})
+              </option>
+            ))}
+          </select>
 
           <button className="remove-btn" onClick={() => removeCourse(index)}>
-            ❌
+            Remove
           </button>
         </div>
       ))}
-      <div className="buttons">
-        <button onClick={addCourse}>➕ Add Course</button>
-        <button onClick={calculateCGPA}>📊 Calculate CGPA</button>
+
+      <div className="buttons-row">
+        <button className="add-btn" onClick={addCourse}>
+          Add Course
+        </button>
+
+        <button className="calculate-btn" onClick={handleCalculateClick}>
+          Calculate CGPA
+        </button>
       </div>
-      {cgpa !== null && <h2>Your CGPA is: {cgpa}</h2>}
 
-<footer className="footer">
-  © {new Date().getFullYear()} Nadim Mahmud. All rights reserved.
-</footer>
+      {cgpa !== null && <h2 className="cgpa-display">CGPA: {cgpa}</h2>}
 
-
+      <footer className="footer">
+        © {new Date().getFullYear()} Md Nadim Mahmud. All rights reserved.
+      </footer>
     </div>
   );
 }
