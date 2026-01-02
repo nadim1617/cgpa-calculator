@@ -19,6 +19,12 @@ h1 {
   color: #111;
 }
 
+/* ✅ Subheading style (light mode) */
+.subheading {
+  color: #111;
+  margin-bottom: 15px;
+}
+
 /* Course row styling */
 .course-row {
   display: flex;
@@ -84,7 +90,7 @@ button:hover {
   margin-bottom: 20px;
 }
 
-/* Buttons row (Add + Calculate) */
+/* Buttons row */
 .buttons-row {
   margin-top: 15px;
   display: flex;
@@ -101,29 +107,25 @@ button:hover {
   color: #111;
 }
 
-/* Footer styling */
+/* Footer */
 .footer {
   margin-top: 40px;
   font-size: 14px;
   color: #555;
 }
 
-/* Dark mode: only background changes */
+/* Dark mode background */
 body.dark {
   background-color: #121212;
 }
 
-/* Dark mode heading color fix */
+/* Dark mode text fixes */
 body.dark h1,
-body.dark .cgpa-display {
-  color: #ffffff; /* white color in dark mode */
+body.dark .cgpa-display,
+body.dark .subheading {
+  color: #ffffff;
 }
 
 body.dark .footer {
-  color: #aaa; /* slightly lighter for footer in dark mode */
-}
-
-
-body.dark .App {
-  /* keep all text and input colors same */
+  color: #aaa;
 }
