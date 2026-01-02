@@ -5,22 +5,23 @@ function App() {
   const [courses, setCourses] = useState([{ credit: "", grade: "" }]);
   const [darkMode, setDarkMode] = useState(false);
   const [cgpa, setCgpa] = useState(null);
+  const [totalCredits, setTotalCredits] = useState(0);
 
   useEffect(() => {
     document.body.className = darkMode ? "dark" : "";
   }, [darkMode]);
 
   const gradePoints = {
-    "A+": 4.0,
+    "A+": 4.00,
     "A": 3.75,
-    "A-": 3.5,
+    "A-": 3.50,
     "B+": 3.25,
-    "B": 3.0,
+    "B": 3.00,
     "B-": 2.75,
-    "C+": 2.5,
+    "C+": 2.50,
     "C": 2.25,
-    "D": 2.0,
-    "F": 0.0,
+    "D": 2.00,
+    "F": 0.00,
   };
 
   const handleChange = (index, field, value) => {
@@ -38,19 +39,21 @@ function App() {
   };
 
   const calculateCGPA = () => {
-    let totalCredits = 0;
-    let totalPoints = 0;
+    let credits = 0;
+    let points = 0;
 
     courses.forEach((course) => {
       const credit = parseFloat(course.credit);
       if (credit > 0 && course.grade) {
-        totalCredits += credit;
-        totalPoints += credit * gradePoints[course.grade];
+        credits += credit;
+        points += credit * gradePoints[course.grade];
       }
     });
 
-    if (totalCredits === 0) return "0.00";
-    return (totalPoints / totalCredits).toFixed(2);
+    setTotalCredits(credits);
+
+    if (credits === 0) return "0.00";
+    return (points / credits).toFixed(2);
   };
 
   const handleCalculateClick = () => {
@@ -60,21 +63,18 @@ function App() {
   return (
     <div className="App">
       <h1>CGPA Calculator BD</h1>
-
-      {/* ✅ Added className ONLY */}
       <p className="subheading">
         CGPA Calculator for University Students in Bangladesh
       </p>
 
-      <button
-        className="dark-toggle"
-        onClick={() => setDarkMode(!darkMode)}
-      >
+      <button className="dark-toggle" onClick={() => setDarkMode(!darkMode)}>
         {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
       </button>
 
       {courses.map((course, index) => (
         <div key={index} className="course-row">
+          <span className="serial">{index + 1}.</span>
+
           <input
             type="number"
             step="0.1"
@@ -116,7 +116,14 @@ function App() {
         </button>
       </div>
 
-      {cgpa !== null && <h2 className="cgpa-display">CGPA: {cgpa}</h2>}
+      {cgpa !== null && (
+        <div className="result-box">
+          <h2 className="cgpa-display">CGPA: {cgpa}</h2>
+          <p className="total-credit">
+            Total Credits: {totalCredits}
+          </p>
+        </div>
+      )}
 
       <footer className="footer">
         © {new Date().getFullYear()} Md Nadim Mahmud. All rights reserved.

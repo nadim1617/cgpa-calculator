@@ -1,6 +1,7 @@
-/* General body */
+/* Global font — SF Pro system stack */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
@@ -15,42 +16,40 @@ body {
 }
 
 h1 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #111;
 }
 
-/* ✅ Subheading style (light mode) */
 .subheading {
-  color: #111;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-/* Course row styling */
+/* Course row */
 .course-row {
   display: flex;
   gap: 10px;
+  align-items: center;
   justify-content: center;
   margin-bottom: 12px;
   flex-wrap: wrap;
 }
 
-/* Input fields */
+.serial {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: right;
+}
+
+/* Inputs */
 input,
 select {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  min-width: 100px;
+  min-width: 110px;
   color: #000;
   background-color: #fff;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus,
-select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
-  outline: none;
 }
 
 /* Buttons */
@@ -60,15 +59,8 @@ button {
   border: none;
   cursor: pointer;
   font-weight: 500;
-  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-
-/* Specific buttons */
 .add-btn {
   background-color: #10b981;
   color: #fff;
@@ -90,21 +82,28 @@ button:hover {
   margin-bottom: 20px;
 }
 
-/* Buttons row */
+/* Button row */
 .buttons-row {
   margin-top: 15px;
   display: flex;
   gap: 10px;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
-/* CGPA display */
-.cgpa-display {
+/* Result box */
+.result-box {
   margin-top: 20px;
+}
+
+.cgpa-display {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
   color: #111;
+}
+
+.total-credit {
+  font-size: 16px;
+  margin-top: 5px;
 }
 
 /* Footer */
@@ -114,18 +113,26 @@ button:hover {
   color: #555;
 }
 
-/* Dark mode background */
+/* Dark mode — background only */
 body.dark {
   background-color: #121212;
 }
 
-/* Dark mode text fixes */
 body.dark h1,
-body.dark .cgpa-display,
-body.dark .subheading {
+body.dark .cgpa-display {
   color: #ffffff;
+}
+
+body.dark .subheading {
+  color: #dddddd;
 }
 
 body.dark .footer {
   color: #aaa;
+}
+
+/* Dark mode visibility fixes */
+body.dark .serial,
+body.dark .total-credit {
+  color: #ffffff;
 }
