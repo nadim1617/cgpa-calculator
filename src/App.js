@@ -59,7 +59,10 @@ function App() {
 
   return (
     <div className="App">
-      <h1>CGPA Calculator</h1>
+      <h1>CGPA Calculator BD</h1>
+
+<p>CGPA Calculator for University Students in Bangladesh</p>
+
 
       <button
         className="dark-toggle"
