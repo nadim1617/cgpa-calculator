@@ -1,138 +1,237 @@
-/* Global font — SF Pro system stack */
+/* ================= GLOBAL ================= */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-    "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Figma-style Gradient Background */
+  background: linear-gradient(180deg, #b8e2ff 0%, #ffffff 100%);
+  background-attachment: fixed;
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s ease;
+  transition: all 0.4s ease;
 }
 
-.App {
-  max-width: 650px;
+/* ================= ROOT ================= */
+.app-root {
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+
+/* ================= BUTTONS & HOVER EFFECTS ================= */
+button {
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Light Mode Button Hover: Dark Glow */
+button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+}
+
+/* Dark Mode Button Hover: White Glow */
+body.dark button:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+/* ================= PHASE 1 – UNIVERSITY PAGE ================= */
+.university-page {
+  max-width: 800px;
   margin: auto;
-  padding: 20px;
   text-align: center;
 }
 
-h1 {
-  margin-bottom: 10px;
-  color: #111;
+.university-title {
+  font-size: 56px; 
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #001a33;
 }
 
-.subheading {
-  margin-bottom: 20px;
+.university-subtitle {
+  font-size: 18px;
+  background: white;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   color: #333;
 }
 
-/* Course row */
-.course-row {
+.inline-toggle {
+  display: block;
+  margin: 0 auto 50px;
+  background-color: #2563eb;
+  color: white;
+}
+
+.university-grid {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.university-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 15px 30px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center; 
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light Mode Card Hover: Dark Glow */
+.university-card:hover {
+  transform: translateX(10px); 
+  background-color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); 
+}
+
+/* Dark Mode Card Hover: White Glow */
+body.dark .university-card:hover {
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+}
+
+.university-logo-wrapper {
+  width: 75px; 
+  height: 75px; 
+  margin-right: 25px; 
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
+  background-color: #ffffff; 
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.serial {
-  font-weight: 600;
-  min-width: 20px;
-  text-align: right;
+.university-logo { width: 100%; height: 100%; object-fit: contain; }
+
+.uni-card-serial {
+  font-weight: 800;
+  font-size: 18px;
+  color: #2563eb;
+  margin-right: 15px;
+  min-width: 25px;
 }
 
-/* Inputs */
-input,
-select {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  min-width: 110px;
-  color: #000;
-  background-color: #fff;
+.university-name { font-size: 18px; font-weight: 600; color: #111; }
+
+/* ================= PHASE 2 – CALCULATOR DESIGN ================= */
+.App {
+  max-width: 680px;
+  margin: auto;
+  text-align: center;
 }
 
-/* Buttons */
-button {
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
+.subheading {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
 }
 
-.add-btn {
-  background-color: #10b981;
-  color: #fff;
-}
-
-.remove-btn {
-  background-color: #ef4444;
-  color: #fff;
-}
-
-.calculate-btn {
-  background-color: #2563eb;
-  color: #fff;
-}
-
-.dark-toggle {
-  background-color: #2563eb;
-  color: #fff;
+.uni-display-name {
+  font-size: 16px;
+  color: #2563eb;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
-/* Button row */
-.buttons-row {
-  margin-top: 15px;
+.top-action-row {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.change-uni-btn { background-color: #6b7280; color: #ffffff; border-radius: 25px; }
+.dark-toggle-btn { background-color: #2563eb; color: #ffffff; border-radius: 25px; }
+
+.course-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.serial {
+  font-weight: 700;
+  min-width: 25px;
+  color: #111;
+}
+
+input, select {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #d1d5db;
+  background-color: #ffffff;
+}
+
+.remove-btn { background-color: #ef4444; color: #ffffff; height: 44px; border-radius: 12px; }
+.add-btn { background-color: #10b981; color: #ffffff; border-radius: 15px; }
+.calculate-btn { background-color: #2563eb; color: #ffffff; border-radius: 15px; }
+.reset-btn { background-color: #4b5563; color: #ffffff; border-radius: 15px; }
+
+.buttons-row {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
   justify-content: center;
 }
 
-/* Result box */
-.result-box {
-  margin-top: 20px;
-}
-
-.cgpa-display {
-  font-size: 24px;
+.cgpa-display, .total-credit {
+  font-size: 26px;
   font-weight: 700;
   color: #111;
 }
 
-.total-credit {
-  font-size: 16px;
-  margin-top: 5px;
+.cgpa-display { margin-top: 24px; }
+.total-credit { margin-top: 8px; }
+
+/* ================= DARK MODE FIXES ================= */
+body.dark { background: #0f172a; }
+body.dark .university-title, body.dark h1, body.dark .university-name, body.dark .serial, body.dark .cgpa-display, body.dark .total-credit { color: #ffffff; }
+body.dark .uni-card-serial { color: #38bdf8; }
+
+body.dark .university-subtitle, body.dark .subheading { 
+  background: #1e293b; 
+  color: #eeeeee; 
 }
 
-/* Footer */
-.footer {
-  margin-top: 40px;
-  font-size: 14px;
-  color: #555;
+body.dark .uni-display-name { color: #38bdf8; }
+body.dark .university-card { background: #1e293b; border-color: #334155; }
+body.dark input, body.dark select { background: #1e293b; color: white; border-color: #334155; }
+body.dark .footer { color: #94a3b8; }
+
+@media (max-width: 600px) {
+  .university-title { font-size: 32px; }
+  .course-row {
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 12px;
+  }
+  body.dark .course-row { background: rgba(255,255,255,0.05); }
+  input, select, .remove-btn { width: 100%; }
+  .serial { display: block; text-align: center; }
 }
 
-/* Dark mode — background only */
-body.dark {
-  background-color: #121212;
-}
-
-body.dark h1,
-body.dark .cgpa-display {
-  color: #ffffff;
-}
-
-body.dark .subheading {
-  color: #dddddd;
-}
-
-body.dark .footer {
-  color: #aaa;
-}
-
-/* Dark mode visibility fixes */
-body.dark .serial,
-body.dark .total-credit {
-  color: #ffffff;
-}
+.footer { margin-top: 40px; font-size: 12px; color: #555; }
