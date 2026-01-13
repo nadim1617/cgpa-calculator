@@ -134,6 +134,7 @@ body.dark .university-card:hover {
   max-width: 680px;
   margin: auto;
   text-align: center;
+  padding-bottom: 120px; /* Space for sticky bar */
 }
 
 .subheading {
@@ -189,11 +190,48 @@ input, select {
 .calculate-btn { background-color: #2563eb; color: #ffffff; border-radius: 15px; }
 .reset-btn { background-color: #4b5563; color: #ffffff; border-radius: 15px; }
 
-.buttons-row {
-  margin-top: 24px;
+/* ================= PHASE 2 – REFINED STICKY ACTION BAR ================= */
+.sticky-bar {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  /* Fix: Slight rounding on top corners only for a "touched" look */
+  border-radius: 20px 20px 0 0; 
+  /* Fix: Merging with background using transparent glass effect */
+  background: rgba(255, 255, 255, 0.7); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 20px 0;
+  margin-top: 30px;
   display: flex;
   gap: 12px;
   justify-content: center;
+  z-index: 1000;
+  /* Fix: Removed visible solid border */
+  border: none; 
+  /* Subtle shadow to give depth without a hard border */
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05); 
+}
+
+/* FLOATING SCROLL BUTTON */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 95px; /* Above the sticky bar */
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  border: none;
+}
+
+.scroll-top-btn:hover {
+  transform: scale(1.1);
+  background-color: #1d4ed8;
 }
 
 .cgpa-display, .total-credit {
@@ -202,8 +240,12 @@ input, select {
   color: #111;
 }
 
-.cgpa-display { margin-top: 24px; }
-.total-credit { margin-top: 8px; }
+.result-box {
+  background: rgba(37, 99, 235, 0.05);
+  padding: 20px;
+  border-radius: 16px;
+  margin: 30px 0;
+}
 
 /* ================= DARK MODE FIXES ================= */
 body.dark { background: #0f172a; }
@@ -215,11 +257,19 @@ body.dark .university-subtitle, body.dark .subheading {
   color: #eeeeee; 
 }
 
-body.dark .uni-display-name { color: #38bdf8; }
 body.dark .university-card { background: #1e293b; border-color: #334155; }
 body.dark input, body.dark select { background: #1e293b; color: white; border-color: #334155; }
+body.dark .uni-display-name { color: #38bdf8; }
 body.dark .footer { color: #94a3b8; }
+body.dark .result-box { background: rgba(56, 189, 248, 0.1); }
 
+/* Dark Theme adjustment for seamless sticky bar blending */
+body.dark .sticky-bar {
+  background: rgba(15, 23, 42, 0.75);
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* MOBILE RESPONSIVENESS */
 @media (max-width: 600px) {
   .university-title { font-size: 32px; }
   .course-row {
@@ -232,6 +282,55 @@ body.dark .footer { color: #94a3b8; }
   body.dark .course-row { background: rgba(255,255,255,0.05); }
   input, select, .remove-btn { width: 100%; }
   .serial { display: block; text-align: center; }
+  
+  .sticky-bar {
+    padding: 15px 10px;
+    border-radius: 15px 15px 0 0;
+  }
+  .sticky-bar button {
+    font-size: 13px;
+    padding: 10px;
+    flex: 1;
+  }
+  .scroll-top-btn {
+    bottom: 90px;
+    right: 15px;
+  }
 }
 
 .footer { margin-top: 40px; font-size: 12px; color: #555; }
+
+
+
+/* ... keep all previous styles ... */
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-box {
+  background: rgba(37, 99, 235, 0.05);
+  padding: 20px;
+  border-radius: 16px;
+  margin: 30px 0;
+  /* Apply the animation here */
+  animation: fadeInUp 0.5s ease-out forwards; 
+}
+
+body.dark .result-box {
+  background: rgba(56, 189, 248, 0.1);
+}
+
+/* Ensure the scroll button also has a smooth entry */
+.scroll-top-btn {
+  /* ... existing styles ... */
+  animation: fadeInUp 0.3s ease-in-out;
+}
