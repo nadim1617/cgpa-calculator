@@ -190,15 +190,15 @@ input, select {
 .calculate-btn { background-color: #2563eb; color: #ffffff; border-radius: 15px; }
 .reset-btn { background-color: #4b5563; color: #ffffff; border-radius: 15px; }
 
-/* ================= PHASE 2 – REFINED STICKY ACTION BAR ================= */
+/* ================= REFINED STICKY ACTION BAR ================= */
 .sticky-bar {
   position: sticky;
   bottom: 0;
   width: 100%;
-  /* Fix: Slight rounding on top corners only for a "touched" look */
+  /* Fix: Rounded top corners for "touched" look */
   border-radius: 20px 20px 0 0; 
-  /* Fix: Merging with background using transparent glass effect */
-  background: rgba(255, 255, 255, 0.7); 
+  /* Fix: Transparent glass background to merge with theme */
+  background: rgba(255, 255, 255, 0.75); 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 20px 0;
@@ -207,9 +207,8 @@ input, select {
   gap: 12px;
   justify-content: center;
   z-index: 1000;
-  /* Fix: Removed visible solid border */
+  /* Fix: Removed visible hard border */
   border: none; 
-  /* Subtle shadow to give depth without a hard border */
   box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05); 
 }
 
@@ -227,6 +226,7 @@ input, select {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1001;
   border: none;
+  animation: fadeInUp 0.3s ease-in-out;
 }
 
 .scroll-top-btn:hover {
@@ -234,10 +234,16 @@ input, select {
   background-color: #1d4ed8;
 }
 
-.cgpa-display, .total-credit {
-  font-size: 26px;
-  font-weight: 700;
-  color: #111;
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .result-box {
@@ -245,6 +251,13 @@ input, select {
   padding: 20px;
   border-radius: 16px;
   margin: 30px 0;
+  animation: fadeInUp 0.5s ease-out forwards; /* Fade-in effect */
+}
+
+.cgpa-display, .total-credit {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
 }
 
 /* ================= DARK MODE FIXES ================= */
@@ -263,9 +276,9 @@ body.dark .uni-display-name { color: #38bdf8; }
 body.dark .footer { color: #94a3b8; }
 body.dark .result-box { background: rgba(56, 189, 248, 0.1); }
 
-/* Dark Theme adjustment for seamless sticky bar blending */
+/* Dark Theme adjustment for seamless sticky bar */
 body.dark .sticky-bar {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(15, 23, 42, 0.8);
   box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -299,38 +312,3 @@ body.dark .sticky-bar {
 }
 
 .footer { margin-top: 40px; font-size: 12px; color: #555; }
-
-
-
-/* ... keep all previous styles ... */
-
-/* ================= ANIMATIONS ================= */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.result-box {
-  background: rgba(37, 99, 235, 0.05);
-  padding: 20px;
-  border-radius: 16px;
-  margin: 30px 0;
-  /* Apply the animation here */
-  animation: fadeInUp 0.5s ease-out forwards; 
-}
-
-body.dark .result-box {
-  background: rgba(56, 189, 248, 0.1);
-}
-
-/* Ensure the scroll button also has a smooth entry */
-.scroll-top-btn {
-  /* ... existing styles ... */
-  animation: fadeInUp 0.3s ease-in-out;
-}

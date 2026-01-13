@@ -16,6 +16,19 @@ function App() {
   const currentCourses = selectedUniversity && universityData[selectedUniversity] 
     ? universityData[selectedUniversity] : [{ credit: "", grade: "" }];
 
+  /* --- AUTO-SCROLL LOGIC --- */
+  useEffect(() => {
+    if (selectedUniversity && currentCourses.length > 1) {
+      // Small timeout to ensure the DOM has rendered the new row
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth"
+        });
+      }, 50);
+    }
+  }, [currentCourses.length, selectedUniversity]);
+
   useEffect(() => {
     document.body.className = darkMode ? "dark" : "";
     localStorage.setItem("user-dark-mode", darkMode);
@@ -119,7 +132,6 @@ function App() {
             ))}
           </div>
 
-          {/* Result box with fade-in animation */}
           {cgpa && (
             <div className="result-box">
               <h2 className="cgpa-display">CGPA: {cgpa}</h2>
