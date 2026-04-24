@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
+const universities = [
+  { id: "diu", name: "Daffodil International University", logo: "/logos/diu.png" },
+  { id: "aiub", name: "American International University-Bangladesh", logo: "/logos/aiub.png" },
+  { id: "brac", name: "BRAC University", logo: "/logos/brac.png" },
+  { id: "nsu", name: "North South University", logo: "/logos/nsu.png" },
+  { id: "ewu", name: "East West University", logo: "/logos/ewu.png" },
+  { id: "uiu", name: "United International University", logo: "/logos/uiu.png" },
+];
+
 function App() {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("user-dark-mode") === "true");
   const [selectedUniversity, setSelectedUniversity] = useState(null);
@@ -34,6 +43,16 @@ function App() {
     localStorage.setItem("user-dark-mode", darkMode);
   }, [darkMode]);
 
+  // Dynamic page title for SEO – each university gets its own descriptive title
+  useEffect(() => {
+    if (selectedUniversity) {
+      const uniName = universities.find(u => u.id === selectedUniversity)?.name || "";
+      document.title = `${uniName} CGPA Calculator | BD CGPA Calculator`;
+    } else {
+      document.title = "BD CGPA Calculator | Fast & Accurate for DIU, BRAC, NSU, AIUB, EWU, UIU";
+    }
+  }, [selectedUniversity]);
+
   useEffect(() => {
     localStorage.setItem("all-university-courses", JSON.stringify(universityData));
   }, [universityData]);
@@ -44,14 +63,6 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const universities = [
-    { id: "diu", name: "Daffodil International University", logo: "/logos/diu.png" },
-    { id: "aiub", name: "American International University-Bangladesh", logo: "/logos/aiub.png" },
-    { id: "brac", name: "BRAC University", logo: "/logos/brac.png" },
-    { id: "nsu", name: "North South University", logo: "/logos/nsu.png" },
-    { id: "ewu", name: "East West University", logo: "/logos/ewu.png" },
-    { id: "uiu", name: "United International University", logo: "/logos/uiu.png" },
-  ];
 
   const gradeTables = {
     diu: { "A+": 4.0, "A": 3.75, "A-": 3.5, "B+": 3.25, "B": 3.0, "B-": 2.75, "C+": 2.5, "C": 2.25, "D": 2.0, "F": 0.0 },
@@ -82,30 +93,56 @@ function App() {
       {!selectedUniversity ? (
         <div className="university-page">
           <h1 className="university-title">BD CGPA Calculator</h1>
-          <p className="university-subtitle">Select Your University</p>
-          <button className="dark-toggle-btn inline-toggle" onClick={() => setDarkMode(!darkMode)}>
+          <p className="university-subtitle">Select your university to calculate your CGPA</p>
+          <button className="dark-toggle-btn inline-toggle" onClick={() => setDarkMode(!darkMode)} aria-label="Toggle dark mode">
             {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
           </button>
-          <div className="university-grid">
+          <div className="university-grid" role="list" aria-label="Select your university">
             {universities.map((uni, index) => (
-              <div key={uni.id} className="university-card" onClick={() => { setSelectedUniversity(uni.id); setCgpa(null); }}>
+              <div
+                key={uni.id}
+                className="university-card"
+                role="listitem"
+                tabIndex={0}
+                aria-label={`Select ${uni.name}`}
+                onClick={() => { setSelectedUniversity(uni.id); setCgpa(null); }}
+                onKeyDown={(e) => e.key === 'Enter' && (setSelectedUniversity(uni.id), setCgpa(null))}
+              >
                 <span className="uni-card-serial">{index + 1}.</span>
-                <div className="university-logo-wrapper"><img src={uni.logo} alt={uni.name} className="university-logo" /></div>
+                <div className="university-logo-wrapper"><img src={uni.logo} alt={`${uni.name} logo`} className="university-logo" /></div>
                 <div className="university-name">{uni.name}</div>
+                <span className="uni-card-arrow" aria-hidden="true">›</span>
               </div>
             ))}
           </div>
         </div>
       ) : (
         <div className="App">
-          <h1>CGPA Calculator BD</h1>
-          <p className="subheading">CGPA Calculator for University Students in Bangladesh</p>
-          <p className="uni-display-name">Selected: {universities.find(u => u.id === selectedUniversity)?.name}</p>
-          
-          <div className="top-action-row">
-            <button className="change-uni-btn" onClick={() => setSelectedUniversity(null)}>Change University</button>
-            <button className="dark-toggle-btn" onClick={() => setDarkMode(!darkMode)}>{darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}</button>
+          {/* Prominent back button – always visible at the top */}
+          <div className="calc-header">
+            <button
+              className="back-btn"
+              onClick={() => { setSelectedUniversity(null); setCgpa(null); }}
+              aria-label="Back to university selection"
+            >
+              ← Back
+            </button>
+            <button className="dark-toggle-btn" onClick={() => setDarkMode(!darkMode)} aria-label="Toggle dark mode">
+              {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
+            </button>
           </div>
+
+          <div className="uni-badge">
+            <img
+              src={universities.find(u => u.id === selectedUniversity)?.logo}
+              alt={universities.find(u => u.id === selectedUniversity)?.name}
+              className="uni-badge-logo"
+            />
+            <span>{universities.find(u => u.id === selectedUniversity)?.name}</span>
+          </div>
+
+          <h1>CGPA Calculator</h1>
+          <p className="subheading">Add your courses, select grades, and hit Calculate</p>
 
           <div className="course-container">
             {currentCourses.map((course, index) => (
@@ -140,9 +177,9 @@ function App() {
           )}
 
           <div className="sticky-bar">
-            <button className="add-btn" onClick={() => updateCourses([...currentCourses, { credit: "", grade: "" }])}>Add Course</button>
-            <button className="calculate-btn" onClick={() => setCgpa(calculateCGPA())}>Calculate CGPA</button>
-            <button className="reset-btn" onClick={() => { if(window.confirm("Reset?")) { updateCourses([{ credit: "", grade: "" }]); setCgpa(null); } }}>Reset</button>
+            <button className="add-btn" aria-label="Add a new course" onClick={() => updateCourses([...currentCourses, { credit: "", grade: "" }])}>+ Add Course</button>
+            <button className="calculate-btn" aria-label="Calculate CGPA" onClick={() => setCgpa(calculateCGPA())}>Calculate CGPA</button>
+            <button className="reset-btn" aria-label="Reset all courses" onClick={() => { updateCourses([{ credit: "", grade: "" }]); setCgpa(null); }}>Reset</button>
           </div>
 
           {showScrollTop && (
