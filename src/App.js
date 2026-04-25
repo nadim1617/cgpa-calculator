@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 const universities = [
@@ -12,7 +12,10 @@ const universities = [
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("user-dark-mode") === "true");
-  const [selectedUniversity, setSelectedUniversity] = useState(null);
+  const [selectedUniversity, setSelectedUniversity] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("uni") || null;
+  });
   const [universityData, setUniversityData] = useState(() => {
     const saved = localStorage.getItem("all-university-courses");
     return saved ? JSON.parse(saved) : {};
@@ -21,6 +24,41 @@ function App() {
   const [cgpa, setCgpa] = useState(null);
   const [totalCredits, setTotalCredits] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const navigateToUniversity = (uniId) => {
+    const url = new URL(window.location);
+    if (uniId) {
+      url.searchParams.set("uni", uniId);
+    } else {
+      url.searchParams.delete("uni");
+    }
+    window.history.pushState({}, "", url);
+    setSelectedUniversity(uniId);
+    setCgpa(null);
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setSelectedUniversity(params.get("uni") || null);
+      setCgpa(null);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const cursorGlowRef = useRef(null);
+
+  useEffect(() => {
+    const updateCursor = (e) => {
+      if (cursorGlowRef.current) {
+        cursorGlowRef.current.style.left = `${e.clientX}px`;
+        cursorGlowRef.current.style.top = `${e.clientY}px`;
+      }
+    };
+    window.addEventListener("mousemove", updateCursor);
+    return () => window.removeEventListener("mousemove", updateCursor);
+  }, []);
 
   const currentCourses = selectedUniversity && universityData[selectedUniversity] 
     ? universityData[selectedUniversity] : [{ credit: "", grade: "" }];
@@ -90,6 +128,11 @@ function App() {
 
   return (
     <div className="app-root">
+      <div className="space-layer-1"></div>
+      <div className="space-layer-2"></div>
+      <div className="space-layer-3"></div>
+      <div className="cursor-glow" ref={cursorGlowRef}></div>
+
       {!selectedUniversity ? (
         <div className="university-page">
           <h1 className="university-title">BD CGPA Calculator</h1>
@@ -105,8 +148,8 @@ function App() {
                 role="listitem"
                 tabIndex={0}
                 aria-label={`Select ${uni.name}`}
-                onClick={() => { setSelectedUniversity(uni.id); setCgpa(null); }}
-                onKeyDown={(e) => e.key === 'Enter' && (setSelectedUniversity(uni.id), setCgpa(null))}
+                onClick={() => navigateToUniversity(uni.id)}
+                onKeyDown={(e) => e.key === 'Enter' && navigateToUniversity(uni.id)}
               >
                 <span className="uni-card-serial">{index + 1}.</span>
                 <div className="university-logo-wrapper"><img src={uni.logo} alt={`${uni.name} logo`} className="university-logo" /></div>
@@ -122,7 +165,7 @@ function App() {
           <div className="calc-header">
             <button
               className="back-btn"
-              onClick={() => { setSelectedUniversity(null); setCgpa(null); }}
+              onClick={() => navigateToUniversity(null)}
               aria-label="Back to university selection"
             >
               ← Back
